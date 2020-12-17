@@ -1,0 +1,8 @@
+{
+    "api": {
+        "getFolder" : "api/folders"
+    },
+    "config": {
+        "localPath" : "./"
+    }
+}
