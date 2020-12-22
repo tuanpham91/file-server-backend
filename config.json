@@ -2,7 +2,7 @@
     "api": {
         "getFolder" : "api/folders"
     },
-    "config": {
-        "localPath" : "./"
+    "env": {
+        "localPath" : "D:\\FileServer"
     }
 }
