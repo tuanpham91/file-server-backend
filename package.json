@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/tuanpham91/file-server-backend/issues"
   },
-  "homepage": "https://github.com/tuanpham91/file-server-backend#readme"
+  "homepage": "https://github.com/tuanpham91/file-server-backend#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }

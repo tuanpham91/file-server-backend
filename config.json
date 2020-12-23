@@ -3,6 +3,11 @@
         "getFolder" : "api/folders"
     },
     "env": {
-        "localPath" : "D:\\FileServer"
+        "win32" : {
+            "localPath" : "D:\\FileServer"    
+        }, 
+        "linux" : {
+            "localPath" : "/home/anhtuan/Desktop/TestFileServer/"
+        }
     }
 }
