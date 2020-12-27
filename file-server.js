@@ -3,6 +3,7 @@ var path = require("path")
 var app = express();
 var config = require("./config.json")
 var fs = require("fs")
+var upload = require('./multer-config')
 
 var localPath = config.env[process.platform].localPath;
 var portNumber = 8080;
@@ -26,11 +27,16 @@ function handleFileListResult(res, files) {
 }
 
 // Maybe give us folder here
-app.get("/", function(req, res) {
+app.get(config.api.getFolder, function(req, res) {
     var path = typeof(req.query.path) === "undefined" ? "" : req.query.path;
     var absPath = buildPath(path);
     getFilesFromLocalPath(absPath, res, handleFileListResult)
 });
+
+// upload file
+app.post(config.api.upload, function(req, res) {
+
+})
 
 app.listen(portNumber, () => {
     console.log(`Example app listening at http://localhost:8080`)
