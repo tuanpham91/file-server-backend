@@ -34,8 +34,8 @@ app.get(config.api.getFolder, function(req, res) {
 });
 
 // upload file
-app.post(config.api.upload, function(req, res) {
-
+app.post(config.api.upload, upload,  function(req, res) {
+    res.status(204).end();
 })
 
 app.listen(portNumber, () => {
