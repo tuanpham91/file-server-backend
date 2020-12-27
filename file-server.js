@@ -3,10 +3,25 @@ var path = require("path")
 var app = express();
 var config = require("./config.json")
 var fs = require("fs")
-var upload = require('./multer-config')
+var multer = require('multer')
+const cors = require('cors');
+
+app.use(cors())
 
 var localPath = config.env[process.platform].localPath;
 var portNumber = 8080;
+
+var customStorage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      // TODO read path from request too
+      cb(null, localPath)
+    },
+    filename: function (req, file, cb) {
+      cb(null, file.fieldname + '-' + Date.now())
+    }
+  })
+   
+var upload = multer({ storage: customStorage })
 
 // Maybe in the future, you would want to have a path for each user.
 function buildPath(relPath) {
@@ -27,16 +42,16 @@ function handleFileListResult(res, files) {
 }
 
 // Maybe give us folder here
-app.get(config.api.getFolder, function(req, res) {
+app.get(config.api.getFolder, (req, res) =>  {
     var path = typeof(req.query.path) === "undefined" ? "" : req.query.path;
     var absPath = buildPath(path);
     getFilesFromLocalPath(absPath, res, handleFileListResult)
 });
 
 // upload file
-app.post(config.api.upload, upload,  function(req, res) {
+app.post(config.api.upload, upload.any(),  (req, res)  => {
     res.status(204).end();
-})
+});
 
 app.listen(portNumber, () => {
     console.log(`Example app listening at http://localhost:8080`)
