@@ -1,12 +1,9 @@
 var express = require("express");
 var path = require("path")
-var app = express();
 var config = require("./config.json")
 var fs = require("fs")
 var multer = require('multer')
-const cors = require('cors');
-
-app.use(cors())
+var app = express();
 
 var localPath = config.env[process.platform].localPath;
 var portNumber = 8080;
@@ -17,7 +14,7 @@ var customStorage = multer.diskStorage({
       cb(null, localPath)
     },
     filename: function (req, file, cb) {
-      cb(null, file.fieldname + '-' + Date.now())
+      cb(null, file.originalname)
     }
   })
    
