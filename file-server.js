@@ -2,8 +2,10 @@ var express = require("express");
 var path = require("path")
 var config = require("./config.json")
 var fs = require("fs")
+var cors = require('cors')
 var multer = require('multer')
 var app = express();
+app.use(cors())
 
 var localPath = config.env[process.platform].localPath;
 var portNumber = 8080;
@@ -31,11 +33,16 @@ function getFilesFromLocalPath(path, res, callback) {
     })
 }
 
+// Identify the type of file 4 type : pdf, normal file , folder
+function fileIdentifier() {
+
+}
+
 function handleFileListResult(res, files) {
     // make json out of this.
-    var result = JSON.stringify(files);
-    console.log(files);
-    res.send(result);
+    var obj = {}
+    obj["result"] = files
+    res.send(JSON.stringify(obj));
 }
 
 // Maybe give us folder here
