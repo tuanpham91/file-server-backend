@@ -57,6 +57,14 @@ app.post(config.api.upload, upload.any(),  (req, res)  => {
     res.status(204).end();
 });
 
+app.get(config.api.download, (req,res) => {
+    var path = typeof(req.query.path) === "undefined" ? "" : req.query.path;
+    var absPath = buildPath(path);
+    console.log(absPath)
+
+    res.sendFile(absPath);
+})
+
 app.listen(portNumber, () => {
     console.log(`Example app listening at http://localhost:8080`)
 })
