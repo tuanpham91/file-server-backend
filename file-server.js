@@ -2,6 +2,7 @@ var express = require("express");
 var path = require("path")
 var config = require("./config.json")
 var fs = require("fs")
+const { lstatSync } = require('fs')
 var cors = require('cors')
 var multer = require('multer')
 var app = express();
@@ -9,6 +10,7 @@ app.use(cors())
 
 var localPath = config.env[process.platform].localPath;
 var portNumber = 8080;
+const isDirectory = source => lstatSync(source).isDirectory()
 
 var customStorage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -28,7 +30,11 @@ function buildPath(relPath) {
 }
 
 function getFilesFromLocalPath(path, res, callback) {
-    fs.readdir(path, (_, files) => {
+    fs.readdir(path, (_, fileNames) => {
+        var files = fileNames.map(fName => {
+            var file = {}
+            
+        })
         callback(res, files);
     })
 }
@@ -38,10 +44,15 @@ function fileIdentifier() {
 
 }
 
-function handleFileListResult(res, files) {
+function handleFileListResult(res, fileNames) {
     // make json out of this.
-    var obj = {}
-    obj["result"] = files
+    var files = fileNames.map(fileName => {
+        if (isDirectory(fileName)) {
+            console.log(fileName + " is folder")
+        }
+    })
+    var obj = {};
+    obj["result"] = fileNames
     res.send(JSON.stringify(obj));
 }
 
@@ -60,8 +71,6 @@ app.post(config.api.upload, upload.any(),  (req, res)  => {
 app.get(config.api.download, (req,res) => {
     var path = typeof(req.query.path) === "undefined" ? "" : req.query.path;
     var absPath = buildPath(path);
-    console.log(absPath)
-
     res.sendFile(absPath);
 })
 
