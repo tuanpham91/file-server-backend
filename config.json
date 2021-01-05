@@ -6,10 +6,12 @@
     },
     "env": {
         "win32" : {
-            "localPath" : "D:\\FileServer"    
+            "localPath" : "D:\\FileServer",
+            "slash" : "\\"
         }, 
         "linux" : {
-            "localPath" : "/home/anhtuan/Desktop/TestFileServer/"
+            "localPath" : "/home/anhtuan/Desktop/TestFileServer/",
+            "slash": "\/"
         }
     }
 }

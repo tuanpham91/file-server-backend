@@ -9,7 +9,9 @@ var app = express();
 app.use(cors())
 
 var localPath = config.env[process.platform].localPath;
+var slash = config.env[process.platform].slash;
 var portNumber = 8080;
+
 const isDirectory = source => lstatSync(source).isDirectory()
 
 var customStorage = multer.diskStorage({
@@ -29,11 +31,21 @@ function buildPath(relPath) {
     return path.join(localPath, relPath) ;
 }
 
-function getFilesFromLocalPath(path, res, callback) {
-    fs.readdir(path, (_, fileNames) => {
+function appendSlash(path, fName) {
+    if (path.charAt(path.length-1) === slash) {
+        return path+fName;
+    } else {
+        return path+slash+fName;
+    }
+}
+
+function getFilesFromLocalPath(filePath, res, callback) {
+    fs.readdir(filePath, (_, fileNames) => {
         var files = fileNames.map(fName => {
             var file = {}
-            
+            file["isDirectory"] = isDirectory(appendSlash(filePath.toString(),fName));
+            file["fileName"] = fName;
+            return file;
         })
         callback(res, files);
     })
@@ -44,15 +56,10 @@ function fileIdentifier() {
 
 }
 
-function handleFileListResult(res, fileNames) {
+function handleFileListResult(res, files) {
     // make json out of this.
-    var files = fileNames.map(fileName => {
-        if (isDirectory(fileName)) {
-            console.log(fileName + " is folder")
-        }
-    })
     var obj = {};
-    obj["result"] = fileNames
+    obj["result"] = files
     res.send(JSON.stringify(obj));
 }
 
