@@ -40,7 +40,8 @@ function appendSlash(path, fName) {
 }
 
 function getFilesFromLocalPath(filePath, res, callback) {
-    fs.readdir(filePath, (_, fileNames) => {
+    var absPath = buildPath(filePath);
+    fs.readdir(absPath, (_, fileNames) => {
         if (typeof fileNames === "undefined") {
             callback(res, [])
         } else {
@@ -71,8 +72,7 @@ function handleFileListResult(res, files) {
 // Maybe give us folder here
 app.get(config.api.getFolder, (req, res) =>  {
     var path = typeof(req.query.path) === "undefined" ? "" : req.query.path;
-    var absPath = buildPath(path);
-    getFilesFromLocalPath(absPath, res, handleFileListResult)
+    getFilesFromLocalPath(path, res, handleFileListResult)
 });
 
 // upload file
