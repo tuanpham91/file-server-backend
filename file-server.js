@@ -47,7 +47,7 @@ function getFilesFromLocalPath(filePath, res, callback) {
         } else {
         var files = fileNames.map(fName => {
             var file = {}
-            file["isDirectory"] = isDirectory(appendSlash(filePath.toString(),fName));
+            file["isDirectory"] = isDirectory(appendSlash(absPath.toString(),fName));
             file["fileName"] = fName;
             file["filePath"] = path.join(filePath, fName)
             return file;
