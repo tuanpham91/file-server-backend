@@ -41,13 +41,18 @@ function appendSlash(path, fName) {
 
 function getFilesFromLocalPath(filePath, res, callback) {
     fs.readdir(filePath, (_, fileNames) => {
+        if (typeof fileNames === "undefined") {
+            callback(res, [])
+        } else {
         var files = fileNames.map(fName => {
             var file = {}
             file["isDirectory"] = isDirectory(appendSlash(filePath.toString(),fName));
             file["fileName"] = fName;
+            file["filePath"] = path.join(filePath, fName)
             return file;
         })
         callback(res, files);
+        }
     })
 }
 
