@@ -80,6 +80,19 @@ app.post(config.api.upload, upload.any(),  (req, res)  => {
     res.status(204).end();
 });
 
+//delete file 
+app.delete(config.api.delete, (req,res) => {
+    var path = req.query.path;
+    if (typeof path === "undefined") {
+        // return error
+        res.status(404).end();
+    } else {
+        var absPath = buildPath(path)
+        fs.unlinkSync(absPath)
+        res.status(200).end();
+    }
+})
+
 app.get(config.api.download, (req,res) => {
     var path = typeof(req.query.path) === "undefined" ? "" : req.query.path;
     var absPath = buildPath(path);

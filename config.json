@@ -2,7 +2,8 @@
     "api": {
         "getFolder" : "/api/folders",
         "upload": "/api/upload",
-        "download": "/api/download"
+        "download": "/api/download",
+        "delete": "/api/file/delete"
     },
     "env": {
         "win32" : {
