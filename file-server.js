@@ -80,6 +80,19 @@ app.post(config.api.upload, upload.any(),  (req, res)  => {
     res.status(204).end();
 });
 
+// create Folder 
+// TODO make path and folderName in query a requirement
+app.post(config.api.createFolder, (req, res) => {
+    var relPath = typeof(req.query.path) === "undefined" ? "" : req.query.path;
+    var folderName =  typeof(req.query.folderName) === "undefined" ? "" : req.query.folderName;
+    var localPath = path.join(buildPath(relPath), folderName)
+    console.log(folderName)
+    if (!fs.existsSync(localPath)){
+        fs.mkdirSync(localPath);
+    }
+    res.status(204).end();
+})
+
 //delete file 
 app.delete(config.api.delete, (req,res) => {
     var path = req.query.path;
