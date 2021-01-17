@@ -5,8 +5,9 @@ var fs = require("fs")
 const { lstatSync } = require('fs')
 var cors = require('cors')
 var multer = require('multer')
-var app = express();
+var app = express();    
 app.use(cors())
+app.use(express.json());
 
 var localPath = config.env[process.platform].localPath;
 var slash = config.env[process.platform].slash;
@@ -95,13 +96,19 @@ app.post(config.api.createFolder, (req, res) => {
 
 //delete file 
 app.delete(config.api.delete, (req,res) => {
+    var isDirectory = req.body.isDirectory;
+    // Read body if folder, then delete folder
     var path = req.query.path;
     if (typeof path === "undefined") {
         // return error
         res.status(404).end();
     } else {
         var absPath = buildPath(path)
-        fs.unlinkSync(absPath)
+        if(isDirectory) {
+            fs.rmdirSync(absPath, { recursive: true });
+        } else {
+            fs.unlinkSync(absPath)
+        }
         res.status(200).end();
     }
 })
