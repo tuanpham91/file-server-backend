@@ -18,7 +18,9 @@ const isDirectory = source => lstatSync(source).isDirectory()
 var customStorage = multer.diskStorage({
     destination: function (req, file, cb) {
       // TODO read path from request too
-      cb(null, localPath)
+        var relPath = req.query.path;
+        var absPath = buildPath(localPath, relPath)
+        cb(null, absPath)
     },
     filename: function (req, file, cb) {
       cb(null, file.originalname)
@@ -77,8 +79,10 @@ app.get(config.api.getFolder, (req, res) =>  {
 });
 
 // upload file
+// TODO : Differentiate between users, not just blindly uploading
 app.post(config.api.upload, upload.any(),  (req, res)  => {
-    res.status(204).end();
+    res.status(201).end();
+    
 });
 
 // create Folder 
