@@ -19,7 +19,7 @@ var customStorage = multer.diskStorage({
     destination: function (req, file, cb) {
       // TODO read path from request too
         var relPath = req.query.path;
-        var absPath = buildPath(localPath, relPath)
+        var absPath = buildPath(relPath)
         cb(null, absPath)
     },
     filename: function (req, file, cb) {
@@ -82,7 +82,6 @@ app.get(config.api.getFolder, (req, res) =>  {
 // TODO : Differentiate between users, not just blindly uploading
 app.post(config.api.upload, upload.any(),  (req, res)  => {
     res.status(201).end();
-    
 });
 
 // create Folder 
