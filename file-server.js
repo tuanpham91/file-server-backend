@@ -13,7 +13,7 @@ var localPath = config.env[process.platform].localPath;
 var slash = config.env[process.platform].slash;
 var portNumber = 8080;
 
-const isDirectory = source => lstatSync(source).isDirectory()
+const getFileStat = source => lstatSync(source)
 
 var customStorage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -50,8 +50,11 @@ function getFilesFromLocalPath(filePath, res, callback) {
         } else {
         var files = fileNames.map(fName => {
             var file = {}
-            file["isDirectory"] = isDirectory(appendSlash(absPath.toString(),fName));
+            var fileStat = getFileStat(appendSlash(absPath.toString(),fName))
+            file["isDirectory"] = fileStat.isDirectory();
             file["fileName"] = fName;
+            file["fileSize"] = fileStat.size/1024;
+            file["lastModified"] = fileStat.mtimeMs
             file["filePath"] = path.join(filePath, fName)
             return file;
         })
