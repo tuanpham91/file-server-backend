@@ -53,8 +53,10 @@ function getFilesFromLocalPath(filePath, res, callback) {
             var fileStat = getFileStat(appendSlash(absPath.toString(),fName))
             file["isDirectory"] = fileStat.isDirectory();
             file["fileName"] = fName;
-            file["fileSize"] = Math.round(fileStat.size/(1024*1024)*100)/100 + " MB";
-            file["lastModified"] = fileStat.mtimeMs
+            if (fileStat.isDirectory()) {
+                file["fileSize"] = Math.round(fileStat.size/(1024*1024)*100)/100 + " MB";
+            }
+            file["lastModified"] =  new Date(fileStat.mtimeMs);
             file["filePath"] = path.join(filePath, fName)
             return file;
         })
